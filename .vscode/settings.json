@@ -1,0 +1,15 @@
+{
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/build/*/**": true
+  },
+
+  "editor.detectIndentation": false,
+  "editor.tabSize": 4,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "spellright.language": ["de", "en"]
+}

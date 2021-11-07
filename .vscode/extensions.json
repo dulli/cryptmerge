@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "eamodio.gitlens",
+    "piotrpalarz.vscode-gitignore-generator",
+    "ban.spellright"
+  ]
+}
