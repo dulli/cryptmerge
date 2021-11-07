@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-[ -f /etc/default/cryptmerge ] && echo "Using configuration file..." && . /etc/default/cryptmerge
+[ -f /etc/default/cryptmerge ] && >&2 echo "Using configuration file..." && . /etc/default/cryptmerge
 if [[ -z "${CRYPTMERGE_KEY}" ]] || [[ -z "${CRYPTMERGE_URL}" ]]; then
-    echo "Please provide CRYPTMERGE_KEY and CRYPTMERGE_URL as environment variables or using the configuration file"
+    >&2 echo "Please provide CRYPTMERGE_KEY and CRYPTMERGE_URL as environment variables or using the configuration file"
     exit 1
 fi
 
@@ -13,4 +13,5 @@ else
 fi
 KEYSTRING=$(echo "${CRYPTSTRING}" | openssl enc -d -aes-256-cbc -a -pbkdf2 -iter 100000 -salt -pass pass:"${CRYPTMERGE_KEY}")
 
-echo "Received secret: $KEYSTRING"
+>&2 echo "Received secret:"
+echo $KEYSTRING
