@@ -4,7 +4,7 @@ TODO: _readme to be finished_
 
 ## Explanation
 
-Setting up a combination of `LUKS` encrypted disks and a `mergerfs` union filesystem, to pool the storage on those encrypted disks, on an unsupervised system like a `NAS` (in this case with OpenMediaVault [0]) leads to failed boots, because the encryption key can not be provided manually on boot and the auto-mount procedure will time out. Therefore the pool storage's dependencies never become accessible. One way to circumvent this, without jeopardizing security too much is the following, which uses a combination of existing approaches to perform the decryption with a key stored on a remote system [1] and then manually triggering a script that automatically mounts all remaining drives [2] and adds an additional encryption layer:
+Setting up a combination of `LUKS` encrypted disks and a `mergerfs` union filesystem, to pool the storage on those encrypted disks, on an unsupervised system like a `NAS` (in this case with OMV [0]) leads to failed boots, because the encryption key can not be provided manually on boot and the auto-mount procedure will time out. Therefore the pool storage's dependencies never become accessible. One way to circumvent this, without jeopardizing security too much is the following, which uses a combination of existing approaches to perform the decryption with a key stored on a remote system [1] and then manually triggering a script that automatically mounts all remaining drives [2] and adds an additional encryption layer:
 
 - All `LUKS` encrypted disks and the `mergerfs` pool must have `noauto` added in `/etc/fstab`
 - This needs to be done so that the boot doesn't fail and is the easiest way to avoid waiting on the default timeout
@@ -59,8 +59,18 @@ So, **TL;DR:** using this additional encryption step as a security measure is a 
 
 TODO: _to be added_
 
+## Project goals and to-dos
+
+- [x] Implement the automatic LUKS decryption
+- [x] Implement the automatic mounting of `noauto` `fstab`-entries
+- [x] Add encryption to the remote key
+- [x] Add HTTP Basic Auth
+- [ ] Testing
+- [ ] Create the install script
+- [ ] _Optional_: Create a simple backend/API that automates the remote key storage and deletion
+
 ## References
 
-[0] [OpenMediaVault](https://www.openmediavault.org/)  
+[0] [`openmediavault: The open network attached storage solution`](https://www.openmediavault.org/)  
 [1] [`Automount LUKS disk using remote key`](https://goodstone.altervista.org/wiki/doku.php?id=linux:openmediavault:automount_luks_with_remote_key)  
 [2] [`github.com/longranger/noauto_mounter`](https://github.com/longranger/noauto_mounter/blob/master/noauto_mounter)
