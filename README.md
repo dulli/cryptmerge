@@ -14,7 +14,8 @@ Setting up a combination of `LUKS` encrypted disks and a `mergerfs` union filesy
 Run the following commands (prepend `sudo`, if you are not `root`) to make the script executable and auto-install it as service running at late-startup:
 
 ```bash
-chmod +x cryptmerge
+chmod +x cryptmerge.sh
+cp cryptmerge.sh /etc/init.d/cryptmerge
 update-rc.d cryptmerge defaults
 ```
 
@@ -59,7 +60,7 @@ So, **TL;DR:** using this additional encryption step as a security measure is a 
 - [x] Implement the automatic mounting of `noauto` `fstab`-entries
 - [x] Add encryption to the remote key
 - [x] Add HTTP Basic Auth
-- [ ] Testing
+- [x] Testing
 - [ ] Create the install script
 - [ ] _Optional_: Create a simple backend/API that automates the remote key storage and deletion
 
