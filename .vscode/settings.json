@@ -11,5 +11,6 @@
   "editor.formatOnSave": true,
   "editor.formatOnType": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "spellright.language": ["de", "en"]
+  "spellright.language": ["de", "en"],
+  "spellright.documentTypes": ["markdown", "latex"]
 }

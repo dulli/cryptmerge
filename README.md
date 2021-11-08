@@ -11,12 +11,17 @@ Setting up a combination of `LUKS` encrypted disks and a `mergerfs` union filesy
 
 ## Install
 
-Run the following commands (prepend `sudo`, if you are not `root`) to make the script executable and auto-install it as service running at late-startup:
+To download and install this service simply run:
 
 ```bash
-chmod +x cryptmerge.sh
-cp cryptmerge.sh /etc/init.d/cryptmerge
-update-rc.d cryptmerge defaults
+sudo curl -sSL https://github.com/dulli/cryptmerge/raw/master/tools/install.sh | sudo bash
+```
+
+If you don't want to use the network install, download this repository and run the following commands to make the script executable and auto-install it as service running at startup (after `network-online.target` and before `docker.service` and `smbd.service`):
+
+```bash
+sudo chmod +x tools/install.sh
+sudo ./tools/install.sh
 ```
 
 ### Generate Keyfile
@@ -61,7 +66,7 @@ So, **TL;DR:** using this additional encryption step as a security measure is a 
 - [x] Add encryption to the remote key
 - [x] Add HTTP Basic Auth
 - [x] Testing
-- [ ] Create the install script
+- [x] Create the install script
 - [ ] _Optional_: Create a simple backend/API that automates the remote key storage and deletion
 
 ## References

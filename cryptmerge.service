@@ -1,0 +1,14 @@
+[Unit]
+Description = cryptmerge
+After = network.target network-online.target
+Requires = network-online.target
+Before = docker.service
+Before = smbd.service
+
+[Service]
+ExecStart = /usr/local/sbin/cryptmerge
+Type = oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy = multi-user.target
