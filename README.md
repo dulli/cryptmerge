@@ -11,13 +11,7 @@ Setting up a combination of `LUKS` encrypted disks and a `mergerfs` union filesy
 
 ## Install
 
-To download and install this service simply run:
-
-```bash
-sudo curl -sSL https://github.com/dulli/cryptmerge/raw/master/tools/install.sh | sudo bash
-```
-
-If you don't want to use the network install, download this repository and run the following commands to make the script executable and auto-install it as service running at startup (after `network-online.target` and before `docker.service` and `smbd.service`):
+To install this service simply download this repository and run the following commands to make the script executable and auto-install it as service running at startup (after `network-online.target` and before `docker.service` and `smbd.service`):
 
 ```bash
 sudo chmod +x tools/install.sh
