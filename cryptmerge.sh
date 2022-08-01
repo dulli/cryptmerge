@@ -34,14 +34,10 @@ do
 
     >&2 echo "Trying to unlock disk $DEVICENAME..."
     echo $KEYSTRING | cryptsetup luksOpen /dev/$DEVICENAME $DEVICENAME-crypt &
-    pids[${i}]=$!
 done
 
 # wait before mounting locals (ensure all drives are decrypted)
-for pid in ${pids[*]}; do
-    wait $pid
-done
-
+wait
 >&2 echo "All drives have been decrypted."
 
 >&2 echo "Mounting decrypted devices..."
@@ -50,13 +46,10 @@ for STR_MOUNT in ${ARR_MOUNTS_LOCAL}; do
     STR_MOUNT_POINT=`echo "${STR_MOUNT}" | cut -f2 -d" "`
     >&2 echo "Mounting $STR_MOUNT_POINT..."
     mount "$STR_MOUNT_POINT" &
-    pids[${i}]=$!
 done
 
 # wait before mounting unionfs (ensure locals are mounted if used in unionfs)
-for pid in ${pids[*]}; do
-    wait $pid
-done
+wait
 
 >&2 echo "Mounting union filesystems..."
 ARR_MOUNTS_LOCAL=$(echo "$ARR_MOUNTS" | awk '(index($3, "nfs") == 0)' | awk '(index($3, "fuse.mergerfs") != 0)' | awk '(index($4, "bind") == 0)' | cut -f1,2 -d" ")
@@ -64,13 +57,10 @@ for STR_MOUNT in ${ARR_MOUNTS_LOCAL}; do
     STR_MOUNT_POINT=`echo "${STR_MOUNT}" | cut -f2 -d" "`
     >&2 echo "Mounting mergerfs $STR_MOUNT_POINT..."
     mount "$STR_MOUNT_POINT" &
-    pids[${i}]=$!
 done
 
 # wait before mounting binds (ensure locals are mounted if used in binds)
-for pid in ${pids[*]}; do
-    wait $pid
-done
+wait
 
 >&2 echo "Mounting binds..."
 ARR_MOUNTS_BIND=$(echo "$ARR_MOUNTS" | awk '(index($3, "nfs") == 0)' | awk '(index($4, "bind") != 0)' | cut -f1,2 -d" ")
@@ -78,16 +68,10 @@ for STR_MOUNT in ${ARR_MOUNTS_BIND}; do
     STR_MOUNT_POINT=`echo "${STR_MOUNT}" | cut -f2 -d" "`
     >&2 echo "Mounting bind $STR_MOUNT_POINT..."
     mount "$STR_MOUNT_POINT" &
-    pids[${i}]=$!
 done
 
+wait
 >&2 echo "All drives have been mounted."
 
-# wait before finishing
-for pid in ${pids[*]}; do
-    wait $pid
-done
-
 >&2 echo "END of log."
-
 exit 0

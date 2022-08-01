@@ -1,4 +1,4 @@
-# CryptMerge (WIP)
+# CryptMerge
 
 Setting up a combination of `LUKS` encrypted disks and a `mergerfs` union filesystem, to pool the storage on those encrypted disks, on an unsupervised system like a `NAS` (in this case with OMV[^0]) leads to failed boots, because the encryption key can not be provided manually on boot and the auto-mount procedure will time out. Therefore the pool storage's dependencies never become accessible. One way to circumvent this, without jeopardizing security too much is the following, which uses a combination of existing approaches to perform the decryption with a key stored on a remote system[^1] and then manually triggering a script that automatically mounts all remaining drives[^2] and adds an additional encryption layer:
 
