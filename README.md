@@ -39,12 +39,27 @@ CRYPTMERGE_KEY="somekey"
 CRYPTMERGE_URL="192.168.0.1/keyfile.txt"
 ```
 
+#### Basic Auth
+
 Optional variables allow for the use of HTTP Basic Auth, if the remote host requires it:
 
 ```bash
 CRYPTMERGE_USR="someuser"
 CRYPTMERGE_PWD="somepassword"
 ```
+
+#### Manual `mergerfs` definition
+
+Recent versions of [`openmediavault-mergerfs`](https://github.com/OpenMediaVault-Plugin-Developers/openmediavault-mergerfs) dropped `fstab` support and default to using the `systemd` mode of `mergerfs`.[^plugin-commit] As this interferes with the way `cryptmerge` works and getting the timing of the boot order right with `systemd` dependencies didn't seem to work, a way to manually run the `mergerfs` command was added. To use this, disable the `systemd` unit for `mergerfs` and add the following to your configuration:
+
+```bash
+CRYPTMERGE_MANUAL_OPTS=<mergerfs-options>
+CRYPTMERGE_MANUAL_DISKS=<disk1>:<disk2>:...<diskN>
+```
+
+(Using the appropriate [options](https://github.com/trapexit/mergerfs#options) and [branches](https://github.com/trapexit/mergerfs#branches).)
+
+[^plugin-commit]: `openmediavault-mergerfs` silently switched off `fstab` in [this commit](https://github.com/OpenMediaVault-Plugin-Developers/openmediavault-mergerfs/commit/4cadce4db278142e0b2dddf24f16d26a86692367)
 
 ## Does the key encryption on the remote host actually increase security?
 

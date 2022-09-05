@@ -51,7 +51,7 @@ done
 # wait before mounting unionfs (ensure locals are mounted if used in unionfs)
 wait
 
->&2 echo "Mounting union filesystems..."
+>&2 echo "Mounting union filesystems from fstab..."
 ARR_MOUNTS_LOCAL=$(echo "$ARR_MOUNTS" | awk '(index($3, "nfs") == 0)' | awk '(index($3, "fuse.mergerfs") != 0)' | awk '(index($4, "bind") == 0)' | cut -f1,2 -d" ")
 for STR_MOUNT in ${ARR_MOUNTS_LOCAL}; do
     STR_MOUNT_POINT=`echo "${STR_MOUNT}" | cut -f2 -d" "`
@@ -59,8 +59,18 @@ for STR_MOUNT in ${ARR_MOUNTS_LOCAL}; do
     mount "$STR_MOUNT_POINT" &
 done
 
-# wait before mounting binds (ensure locals are mounted if used in binds)
+#wait before mounting the manually defined mergerfs, in case it relies on the previous ones
 wait
+
+if [[ -z "${CRYPTMERGE_MANUAL_OPTS}" ]] || [[ -z "${CRYPTMERGE_MANUAL_DISKS}" ]]; then
+    >&2 echo "No manual MergerFS was configured, moving on..."
+else
+    >&2 echo "Mounting manually defined union filesystem..."
+    mergerfs -o $CRYPTMERGE_MANUAL_OPTS $CRYPTMERGE_MANUAL_DISKS /srv/d812769e-a470-4142-8bcd-5ec0b17343b6
+
+    # wait before mounting binds (ensure locals are mounted if used in binds)
+    wait
+fi
 
 >&2 echo "Mounting binds..."
 ARR_MOUNTS_BIND=$(echo "$ARR_MOUNTS" | awk '(index($3, "nfs") == 0)' | awk '(index($4, "bind") != 0)' | cut -f1,2 -d" ")
