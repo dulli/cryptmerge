@@ -1,5 +1,10 @@
 # CryptMerge
 
+
+> [!IMPORTANT]  
+> For production use, consider [tang](https://github.com/latchset/tang)/[clevis](https://github.com/latchset/clevis) instead.
+
+
 Setting up a combination of `LUKS` encrypted disks and a `mergerfs` union filesystem, to pool the storage on those encrypted disks, on an unsupervised system like a `NAS` (in this case with [OMV](https://www.openmediavault.org/)) leads to failed boots, because the encryption key can not be provided manually on boot and the auto-mount procedure will time out. Therefore the pool storage's dependencies never become accessible. One way to circumvent this, without jeopardizing security too much is the following, which uses a combination of existing approaches to perform the decryption with a key stored on a remote system[^luks-remote] and then manually triggering a script that automatically mounts all remaining drives[^noauto-mounter] and adds an additional encryption layer:
 
 - All `LUKS` encrypted disks and the `mergerfs` pool must have `noauto` added in `/etc/fstab`
